@@ -2,7 +2,6 @@ package br.com.ceppantoja.cursomc.resources.exception;
 
 import br.com.ceppantoja.cursomc.service.exception.DataIntegrityException;
 import br.com.ceppantoja.cursomc.service.exception.ObjectNotFoundException;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

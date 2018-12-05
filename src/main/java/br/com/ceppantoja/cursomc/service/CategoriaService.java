@@ -30,4 +30,9 @@ public class CategoriaService {
 
         return this.repo.save(obj);
     }
+
+    public Categoria update(Categoria obj) {
+        this.find(obj.getId());
+        return this.repo.save(obj);
+    }
 }

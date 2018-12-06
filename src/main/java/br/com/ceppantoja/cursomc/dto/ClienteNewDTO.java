@@ -1,21 +1,38 @@
 package br.com.ceppantoja.cursomc.dto;
 
+import br.com.ceppantoja.cursomc.service.validation.ClienteInsert;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 
+@ClienteInsert
 public class ClienteNewDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    @NotEmpty(message = "Nome é obrigatório")
+    @Size(min = 5, max = 120, message = "Tamanho deve ser entre {min} e {max} caracteres")
     private String nome;
+    @NotEmpty(message = "E-mail é obrigatório")
+    @Email(message = "E-mail inválido")
     private String email;
+
+    @NotEmpty(message = "CPF ou CNPJ é obrigatório")
     private String cpfOuCnpj;
     private Integer tipo;
 
+    @NotEmpty(message = "Logradouro é obrigatório")
     private String logradouro;
+    @NotEmpty(message = "Número é obrigatório")
     private String numero;
     private String complemento;
     private String bairro;
+
+    @NotEmpty(message = "CEP é obrigatório")
     private String cep;
 
+    @NotEmpty(message = "Telefone é obrigatório")
     private String telefone1;
     private String telefone2;
     private String telefone3;

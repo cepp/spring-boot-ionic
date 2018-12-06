@@ -4,6 +4,7 @@ import br.com.ceppantoja.cursomc.service.exception.DataIntegrityException;
 import br.com.ceppantoja.cursomc.service.exception.ObjectNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -14,16 +15,30 @@ public class ResourceExceptionHandler {
 
     @ExceptionHandler(ObjectNotFoundException.class)
     public ResponseEntity<StandardError> objectNotFound(ObjectNotFoundException e, HttpServletRequest request) {
-        StandardError standardError = new StandardError(HttpStatus.NOT_FOUND.value(), e.getMessage(), System.currentTimeMillis());
+        final HttpStatus status = HttpStatus.NOT_FOUND;
 
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(standardError);
+        StandardError standardError = new StandardError(status.value(), e.getMessage(), System.currentTimeMillis());
+
+        return ResponseEntity.status(status).body(standardError);
     }
 
     @ExceptionHandler(DataIntegrityException.class)
     public ResponseEntity<StandardError> dataIntegrity(DataIntegrityException e, HttpServletRequest request) {
-        StandardError standardError = new StandardError(HttpStatus.BAD_REQUEST.value(), e.getMessage(), System.currentTimeMillis());
+        final HttpStatus status = HttpStatus.BAD_REQUEST;
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(standardError);
+        StandardError standardError = new StandardError(status.value(), e.getMessage(), System.currentTimeMillis());
+
+        return ResponseEntity.status(status).body(standardError);
     }
 
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<StandardError> dataIntegrity(MethodArgumentNotValidException e, HttpServletRequest request) {
+        final HttpStatus status = HttpStatus.BAD_REQUEST;
+
+        ValidationError validationError = new ValidationError(status.value(), "Erro de validação", System.currentTimeMillis());
+
+        e.getBindingResult().getFieldErrors().forEach(error -> validationError.addError(error.getField(), error.getDefaultMessage()));
+
+        return ResponseEntity.status(status).body(validationError);
+    }
 }

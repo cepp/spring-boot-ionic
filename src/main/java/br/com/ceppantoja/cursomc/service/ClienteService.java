@@ -1,9 +1,15 @@
 package br.com.ceppantoja.cursomc.service;
 
 import br.com.ceppantoja.cursomc.domain.Cliente;
+import br.com.ceppantoja.cursomc.dto.ClienteDTO;
 import br.com.ceppantoja.cursomc.repositories.ClienteRepository;
+import br.com.ceppantoja.cursomc.service.exception.DataIntegrityException;
 import br.com.ceppantoja.cursomc.service.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,5 +28,41 @@ public class ClienteService {
 
     public List<Cliente> findAll() {
         return this.repo.findAll();
+    }
+
+    public Cliente insert(Cliente obj) {
+        obj.setId(null);
+
+        return this.repo.save(obj);
+    }
+
+    public Cliente update(Cliente obj) {
+        Cliente objToUpdate = this.find(obj.getId());
+
+        this.updateData(objToUpdate, obj);
+
+        return this.repo.save(objToUpdate);
+    }
+
+    public void delete(Integer id) {
+        this.find(id);
+        try {
+            this.repo.deleteById(id);
+        } catch (DataIntegrityViolationException e) {
+            throw new DataIntegrityException("Não é possível excluir um cliente que possui pedidos");
+        }
+    }
+
+    public Page<Cliente> findByPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+        return this.repo.findAll(PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy));
+    }
+
+    public Cliente fromDTO(ClienteDTO clienteDTO) {
+        return new Cliente(clienteDTO.getId(), clienteDTO.getNome(), clienteDTO.getEmail(), null, null);
+    }
+
+    public void updateData(Cliente objToUpdate, Cliente obj) {
+        objToUpdate.setNome(obj.getNome());
+        objToUpdate.setEmail(obj.getEmail());
     }
 }

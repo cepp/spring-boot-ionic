@@ -1,6 +1,7 @@
 package br.com.ceppantoja.cursomc.service;
 
 import br.com.ceppantoja.cursomc.domain.Categoria;
+import br.com.ceppantoja.cursomc.dto.CategoriaDTO;
 import br.com.ceppantoja.cursomc.repositories.CategoriaRepository;
 import br.com.ceppantoja.cursomc.service.exception.DataIntegrityException;
 import br.com.ceppantoja.cursomc.service.exception.ObjectNotFoundException;
@@ -52,5 +53,9 @@ public class CategoriaService {
 
     public Page<Categoria> findByPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
         return this.repo.findAll(PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy));
+    }
+
+    public Categoria fromDTO(CategoriaDTO categoriaDTO) {
+        return new Categoria(categoriaDTO.getId(), categoriaDTO.getNome());
     }
 }

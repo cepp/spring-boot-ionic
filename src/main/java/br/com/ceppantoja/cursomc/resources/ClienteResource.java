@@ -2,6 +2,7 @@ package br.com.ceppantoja.cursomc.resources;
 
 import br.com.ceppantoja.cursomc.domain.Cliente;
 import br.com.ceppantoja.cursomc.dto.ClienteDTO;
+import br.com.ceppantoja.cursomc.dto.ClienteNewDTO;
 import br.com.ceppantoja.cursomc.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,7 +21,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/clientes")
@@ -30,8 +30,8 @@ public class ClienteResource {
     private ClienteService service;
 
     @GetMapping
-    public List<ClienteDTO> listar() {
-        return this.service.findAll().stream().map(ClienteDTO::new).collect(Collectors.toList());
+    public List<Cliente> listar() {
+        return this.service.findAll();
     }
 
     @GetMapping(value = "/{id}")
@@ -41,8 +41,10 @@ public class ClienteResource {
     }
 
     @PostMapping
-    public ResponseEntity<Void> insert(@Valid @RequestBody ClienteDTO categoriaDTO) {
-        Cliente novoObjeto = this.service.insert(this.service.fromDTO(categoriaDTO));
+    public ResponseEntity<Void> insert(@Valid @RequestBody ClienteNewDTO categoriaNewDTO) {
+        Cliente obj = this.service.fromDTO(categoriaNewDTO);
+
+        Cliente novoObjeto = this.service.insert(obj);
 
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(novoObjeto.getId()).toUri();
 

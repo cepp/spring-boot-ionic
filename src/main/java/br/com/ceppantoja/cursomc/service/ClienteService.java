@@ -61,7 +61,7 @@ public class ClienteService {
         return new Cliente(clienteDTO.getId(), clienteDTO.getNome(), clienteDTO.getEmail(), null, null);
     }
 
-    public void updateData(Cliente objToUpdate, Cliente obj) {
+    private void updateData(Cliente objToUpdate, Cliente obj) {
         objToUpdate.setNome(obj.getNome());
         objToUpdate.setEmail(obj.getEmail());
     }

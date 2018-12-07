@@ -1,12 +1,14 @@
 package br.com.ceppantoja.cursomc.dto;
 
 import br.com.ceppantoja.cursomc.domain.Cliente;
+import br.com.ceppantoja.cursomc.service.validation.ClienteUpdate;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 
+@ClienteUpdate
 public class ClienteDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 

@@ -23,6 +23,7 @@ import br.com.ceppantoja.cursomc.repositories.PagamentoRepository;
 import br.com.ceppantoja.cursomc.repositories.PedidoRepository;
 import br.com.ceppantoja.cursomc.repositories.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -50,6 +51,8 @@ public class DBService {
     private PagamentoRepository pagamentoRepository;
     @Autowired
     private ItemPedidoRepository itemPedidoRepository;
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public void instatiateTestDatabase() throws ParseException {
         Categoria categoria1 = new Categoria(null, "Informática");
@@ -109,7 +112,7 @@ public class DBService {
         this.estadoRepository.saveAll(Arrays.asList(estado1, estado2));
         this.cidadeRepository.saveAll(Arrays.asList(cidade1, cidade2, cidade3));
 
-        Cliente cliente1 = new Cliente(null, "Maria Silva", "ceppantoja@gmail.com", "36378912377", TipoCliente.PESSOAFISICA);
+        Cliente cliente1 = new Cliente(null, "Maria Silva", "ceppantoja@gmail.com", "36378912377", TipoCliente.PESSOAFISICA, this.bCryptPasswordEncoder.encode("123"));
         cliente1.getTelefones().addAll(Arrays.asList("27363323", "93838393"));
 
         Endereco endereco1 = new Endereco(null, "Rua Flores", "300", "Apto 303", "Jardim", "38220834", cliente1, cidade1);

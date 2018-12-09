@@ -22,6 +22,9 @@ public class ClienteNewDTO implements Serializable {
     private String cpfOuCnpj;
     private Integer tipo;
 
+    @NotEmpty(message = "Senha é obrigatória")
+    private String senha;
+
     @NotEmpty(message = "Logradouro é obrigatório")
     private String logradouro;
     @NotEmpty(message = "Número é obrigatório")
@@ -72,6 +75,14 @@ public class ClienteNewDTO implements Serializable {
 
     public void setTipo(Integer tipo) {
         this.tipo = tipo;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 
     public String getLogradouro() {

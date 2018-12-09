@@ -1,6 +1,8 @@
 package br.com.ceppantoja.cursomc.config;
 
 import br.com.ceppantoja.cursomc.service.DBService;
+import br.com.ceppantoja.cursomc.service.EmailService;
+import br.com.ceppantoja.cursomc.service.SmtpEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -25,5 +27,10 @@ public class DevConfig {
             this.dbService.instatiateTestDatabase();
         }
         return true;
+    }
+
+    @Bean
+    public EmailService emailService() {
+        return new SmtpEmailService();
     }
 }

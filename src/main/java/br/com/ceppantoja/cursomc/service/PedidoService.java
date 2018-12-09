@@ -4,6 +4,7 @@ import br.com.ceppantoja.cursomc.domain.ItemPedido;
 import br.com.ceppantoja.cursomc.domain.PagamentoComBoleto;
 import br.com.ceppantoja.cursomc.domain.Pedido;
 import br.com.ceppantoja.cursomc.domain.enums.EstadoPagamento;
+import br.com.ceppantoja.cursomc.repositories.ClienteRepository;
 import br.com.ceppantoja.cursomc.repositories.ItemPedidoRepository;
 import br.com.ceppantoja.cursomc.repositories.PagamentoRepository;
 import br.com.ceppantoja.cursomc.repositories.PedidoRepository;
@@ -29,6 +30,8 @@ public class PedidoService {
     @Autowired
     private PagamentoRepository pagamentoRepository;
     @Autowired
+    private ClienteRepository clienteRepository;
+    @Autowired
     private BoletoService boletoService;
 
     public Pedido find(Integer id) {
@@ -47,6 +50,7 @@ public class PedidoService {
 
         obj.setInstante(new Date());
 
+        obj.setCliente(this.clienteRepository.getOne(obj.getCliente().getId()));
         obj.getPagamento().setEstadoPagamento(EstadoPagamento.PENDENTE);
         obj.getPagamento().setPedido(obj);
 
@@ -61,6 +65,8 @@ public class PedidoService {
         novoObj.getItens().forEach(itemPedido -> this.setItemPedido(itemPedido, novoObj));
 
         this.itemPedidoRepository.saveAll(novoObj.getItens());
+
+        System.out.println(obj.toString());
 
         return novoObj;
     }

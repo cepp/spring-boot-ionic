@@ -33,6 +33,8 @@ public class PedidoService {
     private ClienteRepository clienteRepository;
     @Autowired
     private BoletoService boletoService;
+    @Autowired
+    private EmailService emailService;
 
     public Pedido find(Integer id) {
         Optional<Pedido> obj = this.repo.findById(id);
@@ -66,14 +68,15 @@ public class PedidoService {
 
         this.itemPedidoRepository.saveAll(novoObj.getItens());
 
-        System.out.println(obj.toString());
+        this.emailService.sendOrderConfirmationEmail(obj);
 
         return novoObj;
     }
 
     private void setItemPedido(ItemPedido itemPedido, Pedido obj) {
         itemPedido.setDesconto(0.0);
-        itemPedido.setPreco(this.produtoRepository.findById(itemPedido.getProduto().getId()).get().getPreco());
+        itemPedido.setProduto(this.produtoRepository.findById(itemPedido.getProduto().getId()).get());
+        itemPedido.setPreco(itemPedido.getProduto().getPreco());
         itemPedido.setPedido(obj);
     }
 }

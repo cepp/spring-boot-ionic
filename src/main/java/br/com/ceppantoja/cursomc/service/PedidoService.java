@@ -1,5 +1,7 @@
 package br.com.ceppantoja.cursomc.service;
 
+import br.com.ceppantoja.cursomc.domain.Categoria;
+import br.com.ceppantoja.cursomc.domain.Cliente;
 import br.com.ceppantoja.cursomc.domain.ItemPedido;
 import br.com.ceppantoja.cursomc.domain.PagamentoComBoleto;
 import br.com.ceppantoja.cursomc.domain.Pedido;
@@ -9,8 +11,13 @@ import br.com.ceppantoja.cursomc.repositories.ItemPedidoRepository;
 import br.com.ceppantoja.cursomc.repositories.PagamentoRepository;
 import br.com.ceppantoja.cursomc.repositories.PedidoRepository;
 import br.com.ceppantoja.cursomc.repositories.ProdutoRepository;
+import br.com.ceppantoja.cursomc.security.UserSS;
+import br.com.ceppantoja.cursomc.service.exception.AuthorizationException;
 import br.com.ceppantoja.cursomc.service.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -78,5 +85,19 @@ public class PedidoService {
         itemPedido.setProduto(this.produtoRepository.findById(itemPedido.getProduto().getId()).get());
         itemPedido.setPreco(itemPedido.getProduto().getPreco());
         itemPedido.setPedido(obj);
+    }
+
+    public Page<Pedido> findByPage(Integer page, Integer linesPerPage, String orderBy, String direction) throws ObjectNotFoundException {
+        UserSS user = UserService.authenticated();
+
+        if(user == null) {
+            throw new AuthorizationException("Acesso negado");
+        }
+
+        Cliente cliente = this.clienteRepository.findById(user.getId()).orElse(null);
+
+        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
+
+        return this.repo.findByCliente(cliente, pageRequest);
     }
 }

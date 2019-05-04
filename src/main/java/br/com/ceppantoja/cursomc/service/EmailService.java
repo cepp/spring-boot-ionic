@@ -1,5 +1,6 @@
 package br.com.ceppantoja.cursomc.service;
 
+import br.com.ceppantoja.cursomc.domain.Cliente;
 import br.com.ceppantoja.cursomc.domain.Pedido;
 import org.springframework.mail.SimpleMailMessage;
 
@@ -13,4 +14,6 @@ public interface EmailService {
     void sendOrderConfirmationHtmlEmail(Pedido obj);
 
     void sendHtmlEmail(MimeMessage msg);
+
+    void sendNewPasswordEmail(Cliente cliente, String newPass);
 }

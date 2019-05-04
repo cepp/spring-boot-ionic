@@ -1,5 +1,6 @@
 package br.com.ceppantoja.cursomc.service;
 
+import br.com.ceppantoja.cursomc.domain.Cliente;
 import br.com.ceppantoja.cursomc.domain.Pedido;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -68,5 +69,23 @@ public abstract class AbstractEmailService implements EmailService {
         Context context = new Context();
         context.setVariable("pedido", obj);
         return this.templateEngine.process("email/confirmacaoPedido", context);
+    }
+
+    @Override
+    public void sendNewPasswordEmail(Cliente cliente, String newPass) {
+        SimpleMailMessage simpleMailMessage = prepareNewPasswordEmail(cliente, newPass);
+        this.sendEmail(simpleMailMessage);
+    }
+
+    private SimpleMailMessage prepareNewPasswordEmail(Cliente cliente, String newPass) {
+        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+
+        simpleMailMessage.setTo(cliente.getEmail());
+        simpleMailMessage.setFrom(this.emailSender);
+        simpleMailMessage.setSubject("Solicitação de nova senha");
+        simpleMailMessage.setSentDate(new Date(System.currentTimeMillis()));
+        simpleMailMessage.setText(String.format("Nova senha: %s", newPass));
+
+        return simpleMailMessage;
     }
 }

@@ -3,10 +3,13 @@ package br.com.ceppantoja.cursomc.service;
 import br.com.ceppantoja.cursomc.domain.Cidade;
 import br.com.ceppantoja.cursomc.domain.Cliente;
 import br.com.ceppantoja.cursomc.domain.Endereco;
+import br.com.ceppantoja.cursomc.domain.enums.Perfil;
 import br.com.ceppantoja.cursomc.domain.enums.TipoCliente;
 import br.com.ceppantoja.cursomc.dto.ClienteDTO;
 import br.com.ceppantoja.cursomc.dto.ClienteNewDTO;
 import br.com.ceppantoja.cursomc.repositories.ClienteRepository;
+import br.com.ceppantoja.cursomc.security.UserSS;
+import br.com.ceppantoja.cursomc.service.exception.AuthorizationException;
 import br.com.ceppantoja.cursomc.service.exception.DataIntegrityException;
 import br.com.ceppantoja.cursomc.service.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +32,11 @@ public class ClienteService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public Cliente find(Integer id) {
+        UserSS user = UserService.authenticated();
+        if(user == null || (!user.hasRole(Perfil.ADMIN) && !user.getId().equals(id))) {
+            throw new AuthorizationException("Acesso negado");
+        }
+
         Optional<Cliente> obj = this.repo.findById(id);
         return obj.orElseThrow(() -> new ObjectNotFoundException(
                 String.format("Objeto não encontrado! Id: %d, Tipo: %s", id, Cliente.class.getName())));

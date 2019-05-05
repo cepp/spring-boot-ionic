@@ -1,5 +1,6 @@
 package br.com.ceppantoja.cursomc.service;
 
+import br.com.ceppantoja.cursomc.service.exception.FileException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import org.slf4j.Logger;
@@ -33,7 +34,7 @@ public class S3Service {
 
             return uploadFile(inputStream, fileName, contentType);
         } catch (IOException e) {
-            throw new RuntimeException("Erro IO: " + e.getMessage());
+            throw new FileException("Erro IO: " + e.getMessage());
         }
     }
 
@@ -47,7 +48,7 @@ public class S3Service {
 
             return this.s3client.getUrl(bucketName, fileName).toURI();
         } catch (URISyntaxException e) {
-            throw new RuntimeException("Erro ao converter URL para URI");
+            throw new FileException("Erro ao converter URL para URI");
         }
     }
 }

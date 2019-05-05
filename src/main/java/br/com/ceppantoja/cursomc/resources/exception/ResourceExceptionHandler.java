@@ -2,7 +2,11 @@ package br.com.ceppantoja.cursomc.resources.exception;
 
 import br.com.ceppantoja.cursomc.service.exception.AuthorizationException;
 import br.com.ceppantoja.cursomc.service.exception.DataIntegrityException;
+import br.com.ceppantoja.cursomc.service.exception.FileException;
 import br.com.ceppantoja.cursomc.service.exception.ObjectNotFoundException;
+import com.amazonaws.AmazonClientException;
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.services.s3.model.AmazonS3Exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -36,8 +40,28 @@ public class ResourceExceptionHandler {
     }
 
     @ExceptionHandler(AuthorizationException.class)
-    public ResponseEntity<StandardError> forbidden(ObjectNotFoundException e, HttpServletRequest request) {
+    public ResponseEntity<StandardError> forbidden(AuthorizationException e, HttpServletRequest request) {
         return getStandardErrorResponseEntity(e, HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(FileException.class)
+    public ResponseEntity<StandardError> file(FileException e, HttpServletRequest request) {
+        return getStandardErrorResponseEntity(e, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(AmazonServiceException.class)
+    public ResponseEntity<StandardError> amazonService(AmazonServiceException e, HttpServletRequest request) {
+        return getStandardErrorResponseEntity(e, HttpStatus.valueOf(e.getStatusCode()));
+    }
+
+    @ExceptionHandler(AmazonClientException.class)
+    public ResponseEntity<StandardError> amazonClient(AmazonClientException e, HttpServletRequest request) {
+        return getStandardErrorResponseEntity(e, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(AmazonS3Exception.class)
+    public ResponseEntity<StandardError> amazonS3(AmazonS3Exception e, HttpServletRequest request) {
+        return getStandardErrorResponseEntity(e, HttpStatus.BAD_REQUEST);
     }
 
     private ResponseEntity<StandardError> getStandardErrorResponseEntity(RuntimeException e, HttpStatus status) {

@@ -45,8 +45,8 @@ public class ClienteService {
     private Integer size;
 
     public Cliente find(Integer id) {
-        UserSS user = UserService.authenticated();
-        if(user == null || (!user.hasRole(Perfil.ADMIN) && !user.getId().equals(id))) {
+        UserSS user = this.getUserSS();
+        if(!user.hasRole(Perfil.ADMIN) && !user.getId().equals(id)) {
             throw new AuthorizationException("Acesso negado");
         }
 
@@ -57,6 +57,22 @@ public class ClienteService {
 
     public List<Cliente> findAll() {
         return this.repo.findAll();
+    }
+
+    public Cliente findByEmail(String email) {
+        UserSS user = this.getUserSS();
+
+        if(!user.hasRole(Perfil.ADMIN) && !user.getUsername().equals(email)) {
+            throw new AuthorizationException("Acesso negado");
+        }
+
+        Cliente obj = this.repo.findByEmail(email);
+
+        if(obj == null) {
+            throw new ObjectNotFoundException(String.format("Objeto não encontrado! Id: %d, Tipo: %s", user.getId(), Cliente.class.getName()));
+        }
+
+        return obj;
     }
 
     @Transactional
@@ -113,10 +129,7 @@ public class ClienteService {
     }
 
     public URI uploadProfilePicture(MultipartFile multipartFile) {
-        UserSS user = UserService.authenticated();
-        if(user == null) {
-            throw new AuthorizationException("Acesso negado");
-        }
+        UserSS user = getUserSS();
 
         BufferedImage jpgImage = this.imageService.getJpgFromFile(multipartFile);
 
@@ -126,5 +139,13 @@ public class ClienteService {
         String fileName = String.format("%s%s.jpg", prefix, user.getId());
         InputStream is = this.imageService.getInputStream(jpgImage, "jpg");
         return this.s3Service.uploadFile(is, fileName, "image");
+    }
+
+    private UserSS getUserSS() {
+        UserSS user = UserService.authenticated();
+        if(user == null) {
+            throw new AuthorizationException("Acesso negado");
+        }
+        return user;
     }
 }

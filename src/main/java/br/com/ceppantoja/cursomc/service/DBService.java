@@ -56,7 +56,7 @@ public class DBService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public void instatiateTestDatabase() throws ParseException {
-        Categoria categoria1 = new Categoria(null, "Informática");
+        Categoria cat1 = new Categoria(null, "Informática");
         Categoria categoria2 = new Categoria(null, "Escritório");
         Categoria categoria3 = new Categoria(null, "Cama mesa e banho");
         Categoria categoria4 = new Categoria(null, "Eletrônicos");
@@ -76,8 +76,48 @@ public class DBService {
         Produto produto10 = new Produto(null, "Pendente", 180.0);
         Produto produto11 = new Produto(null, "Shampoo", 90.0);
 
+        Produto p12 = new Produto(null,"Produto12",10.00);
+        Produto p13 = new Produto(null,"Produto13",10.00);
+        Produto p14 = new Produto(null,"Produto14",10.00);
+        Produto p15 = new Produto(null,"Produto15",10.00);
+        Produto p16 = new Produto(null,"Produto16",10.00);
+        Produto p17 = new Produto(null,"Produto17",10.00);
+        Produto p18 = new Produto(null,"Produto18",10.00);
+        Produto p19 = new Produto(null,"Produto19",10.00);
+        Produto p20 = new Produto(null,"Produto20",10.00);
+        Produto p21 = new Produto(null,"Produto21",10.00);
+        Produto p22 = new Produto(null,"Produto22",10.00);
+        Produto p23 = new Produto(null,"Produto23",10.00);
+        Produto p24 = new Produto(null,"Produto24",10.00);
+        Produto p25 = new Produto(null,"Produto25",10.00);
+        Produto p26 = new Produto(null,"Produto26",10.00);
+        Produto p27 = new Produto(null,"Produto27",10.00);
+        Produto p28 = new Produto(null,"Produto28",10.00);
+        Produto p29 = new Produto(null,"Produto29",10.00);
+        Produto p30 = new Produto(null,"Produto30",10.00);
+        Produto p31 = new Produto(null,"Produto31",10.00);
+        Produto p32 = new Produto(null,"Produto32",10.00);
+        Produto p33 = new Produto(null,"Produto33",10.00);
+        Produto p34 = new Produto(null,"Produto34",10.00);
+        Produto p35 = new Produto(null,"Produto35",10.00);
+        Produto p36 = new Produto(null,"Produto36",10.00);
+        Produto p37 = new Produto(null,"Produto37",10.00);
+        Produto p38 = new Produto(null,"Produto38",10.00);
+        Produto p39 = new Produto(null,"Produto39",10.00);
+        Produto p40 = new Produto(null,"Produto40",10.00);
+        Produto p41 = new Produto(null,"Produto41",10.00);
+        Produto p42 = new Produto(null,"Produto42",10.00);
+        Produto p43 = new Produto(null,"Produto43",10.00);
+        Produto p44 = new Produto(null,"Produto44",10.00);
+        Produto p45 = new Produto(null,"Produto45",10.00);
+        Produto p46 = new Produto(null,"Produto46",10.00);
+        Produto p47 = new Produto(null,"Produto47",10.00);
+        Produto p48 = new Produto(null,"Produto48",10.00);
+        Produto p49 = new Produto(null,"Produto49",10.00);
+        Produto p50 = new Produto(null,"Produto50",10.00);
 
-        categoria1.getProdutos().addAll(Arrays.asList(produto1, produto2, produto3));
+
+        cat1.getProdutos().addAll(Arrays.asList(produto1, produto2, produto3));
         categoria2.getProdutos().addAll(Arrays.asList(produto2, produto4));
         categoria3.getProdutos().addAll(Arrays.asList(produto5, produto6));
         categoria4.getProdutos().addAll(Arrays.asList(produto1, produto2, produto3, produto7));
@@ -85,9 +125,53 @@ public class DBService {
         categoria6.getProdutos().addAll(Arrays.asList(produto9, produto10));
         categoria7.getProdutos().add(produto11);
 
-        produto1.getCategorias().add(categoria1);
-        produto2.getCategorias().addAll(Arrays.asList(categoria1, categoria2, categoria4));
-        produto3.getCategorias().addAll(Arrays.asList(categoria1, categoria4));
+        cat1.getProdutos().addAll(Arrays.asList(p12, p13, p14, p15, p16, p17, p18, p19, p20,
+                p21, p22, p23, p24, p25, p26, p27, p28, p29, p30, p31, p32, p34, p35, p36, p37, p38,
+                p39, p40, p41, p42, p43, p44, p45, p46, p47, p48, p49, p50));
+
+        p12.getCategorias().add(cat1);
+        p13.getCategorias().add(cat1);
+        p14.getCategorias().add(cat1);
+        p15.getCategorias().add(cat1);
+        p16.getCategorias().add(cat1);
+        p17.getCategorias().add(cat1);
+        p18.getCategorias().add(cat1);
+        p19.getCategorias().add(cat1);
+        p20.getCategorias().add(cat1);
+        p21.getCategorias().add(cat1);
+        p22.getCategorias().add(cat1);
+        p23.getCategorias().add(cat1);
+        p24.getCategorias().add(cat1);
+        p25.getCategorias().add(cat1);
+        p26.getCategorias().add(cat1);
+        p27.getCategorias().add(cat1);
+        p28.getCategorias().add(cat1);
+        p29.getCategorias().add(cat1);
+        p30.getCategorias().add(cat1);
+        p31.getCategorias().add(cat1);
+        p32.getCategorias().add(cat1);
+        p33.getCategorias().add(cat1);
+        p34.getCategorias().add(cat1);
+        p35.getCategorias().add(cat1);
+        p36.getCategorias().add(cat1);
+        p37.getCategorias().add(cat1);
+        p38.getCategorias().add(cat1);
+        p39.getCategorias().add(cat1);
+        p40.getCategorias().add(cat1);
+        p41.getCategorias().add(cat1);
+        p42.getCategorias().add(cat1);
+        p43.getCategorias().add(cat1);
+        p44.getCategorias().add(cat1);
+        p45.getCategorias().add(cat1);
+        p46.getCategorias().add(cat1);
+        p47.getCategorias().add(cat1);
+        p48.getCategorias().add(cat1);
+        p49.getCategorias().add(cat1);
+        p50.getCategorias().add(cat1);
+
+        produto1.getCategorias().add(cat1);
+        produto2.getCategorias().addAll(Arrays.asList(cat1, categoria2, categoria4));
+        produto3.getCategorias().addAll(Arrays.asList(cat1, categoria4));
         produto4.getCategorias().add(categoria2);
         produto5.getCategorias().add(categoria3);
         produto6.getCategorias().add(categoria3);
@@ -97,8 +181,9 @@ public class DBService {
         produto10.getCategorias().add(categoria6);
         produto11.getCategorias().add(categoria7);
 
-        this.categoriaRepository.saveAll(Arrays.asList(categoria1, categoria2, categoria3, categoria4, categoria5, categoria6, categoria7));
+        this.categoriaRepository.saveAll(Arrays.asList(cat1, categoria2, categoria3, categoria4, categoria5, categoria6, categoria7));
         this.produtoRepository.saveAll(Arrays.asList(produto1, produto2, produto3, produto4, produto5, produto6, produto7, produto8, produto9, produto10, produto11));
+        this.produtoRepository.saveAll(Arrays.asList(p12, p13, p14, p15, p16, p17, p18, p19, p20, p21, p22, p23, p24, p25, p26, p27, p28, p29, p30, p31, p32, p34, p35, p36, p37, p38, p39, p40, p41, p42, p43, p44, p45, p46, p47, p48, p49, p50));
 
         Estado estado1 = new Estado(null, "Minas Gerais");
         Estado estado2 = new Estado(null, "São Paulo");

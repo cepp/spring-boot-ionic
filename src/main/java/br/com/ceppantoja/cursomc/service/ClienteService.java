@@ -13,6 +13,7 @@ import br.com.ceppantoja.cursomc.service.exception.AuthorizationException;
 import br.com.ceppantoja.cursomc.service.exception.DataIntegrityException;
 import br.com.ceppantoja.cursomc.service.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,6 +23,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.awt.image.BufferedImage;
+import java.io.InputStream;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
@@ -34,6 +37,10 @@ public class ClienteService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     @Autowired
     private S3Service s3Service;
+    @Autowired
+    private ImageService imageService;
+    @Value("${img.prefix.client.profile}")
+    private String prefix;
 
     public Cliente find(Integer id) {
         UserSS user = UserService.authenticated();
@@ -109,12 +116,9 @@ public class ClienteService {
             throw new AuthorizationException("Acesso negado");
         }
 
-        URI uri = this.s3Service.uploadFile(multipartFile);
-
-        Cliente cliente = this.repo.findById(user.getId()).get();
-        cliente.setImageUrl(uri.toString());
-        this.repo.save(cliente);
-
-        return uri;
+        BufferedImage jpgImage = this.imageService.getJpgFromFile(multipartFile);
+        String fileName = String.format("%s%s.jpg", prefix, user.getId());
+        InputStream is = this.imageService.getInputStream(jpgImage, "jpg");
+        return this.s3Service.uploadFile(is, fileName, "image");
     }
 }
